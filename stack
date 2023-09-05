@@ -1,0 +1,45 @@
+# study
+#include <stdio.h>
+#define SIZE 10
+
+int stack[SIZE];
+int top = -1;
+
+void pr();
+int pop();
+void push(int a);
+    
+int main() {
+    int tmp;
+    int choose = 0;
+    while(choose != 3){
+        printf("1.삽입 2.삭제 3.종료\n");
+        scanf("%d", &choose);
+    
+        switch(choose){
+        case 1:
+            scanf("%d", &tmp);
+            push(tmp);
+            pr();
+            break;
+        case 2:
+            printf("출력된 수 : %d\n", pop());
+            pr();
+            break;
+        case 3:
+            break;
+        }
+    }
+    return 0;
+}
+
+void pr(){
+    for(int i = 0; i <= top; i++) printf("%d ", stack[i]);
+    printf("\n");
+}
+int pop(){
+    return stack[top--];
+}
+void push(int a){
+    stack[++top] = a;
+}
