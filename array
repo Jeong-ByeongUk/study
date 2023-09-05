@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+int main() {
+    int list[10]; //배열 선언
+    int *list2[10]; //포인트배열 선언
+
+    for(int i = 0; i < 10; i++) list2[i] = &list[i]; //포인트배열 초기화 배열 주소 넣어줌
+    for(int i = 0; i < 10; i++) **(list2+i) = i; //배열초기화
+    for(int i = 0; i < 10; i++) printf("%d ", list[i]);
+    printf("\n");
+
+    for(int i = 0; i < 10; i++){ //포인트 배열로 2차원 배열 만들기
+        for(int j = 0; j < 10; j++)
+            printf("%d ", list2[i][j]);
+        printf("\n");
+    }
+    printf("%d ", list2[0][1]); //포인트 배열의 2차원 표현은 ij가 바뀌여도 값이 같음
+    printf("%d ", list2[1][0]);
+    list2[0][1] = 12;
+    printf("%d ", list2[1][0]);
+    printf("%d ", list2[1][0]);
+    
+    /*list2[7][7] = 7; //배열공간이 10이므로 (3, 9)이후의 값은 빈공간 {(3,9), (4,8), (4,9), (5,7), (5,8), (5,9), ...}
+    printf("%d ", list2[7][7]);*/
+    
+    return 0;
+}
