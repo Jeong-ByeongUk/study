@@ -1,17 +1,27 @@
-# study
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
 #define SIZE 10
 
-int stack[SIZE];
-int top = -1;
+typedef struct STACK{
+    int *arr;
+    int top;
+}stack;
 
-void pr();
-int pop();
-void push(int a);
+stack create(int size);
+bool isfull(stack s);
+stack push(stack s, int a);
+bool isempty(stack s);
+int pop(stack s);
+void pr(stack s);
     
 int main() {
-    int tmp;
-    int choose = 0;
+    int choose,tmp;
+    stack s;
+
+    s = create(SIZE);
+    
     while(choose != 3){
         printf("1.삽입 2.삭제 3.종료\n");
         scanf("%d", &choose);
@@ -19,12 +29,16 @@ int main() {
         switch(choose){
         case 1:
             scanf("%d", &tmp);
-            push(tmp);
-            pr();
+            s = push(s, tmp);
+            pr(s);
             break;
         case 2:
-            printf("출력된 수 : %d\n", pop());
-            pr();
+            tmp = pop(s);
+            if(tmp != -1) {
+                printf("출력된 수 : %d\n", tmp);
+                s.top--;
+            }
+            pr(s);
             break;
         case 3:
             break;
@@ -33,13 +47,40 @@ int main() {
     return 0;
 }
 
-void pr(){
-    for(int i = 0; i <= top; i++) printf("%d ", stack[i]);
+stack create(int size){
+    stack new;
+
+    new.arr = malloc(sizeof(int)*SIZE);
+    new.top = -1;
+    
+    return new;
+}
+bool isfull(stack s){
+    if(s.top == SIZE-1) return true;
+    else return false;
+}
+stack push(stack s, int a){
+    if(isfull(s)) {
+        printf("stack full\n");
+        return s;
+    }
+    s.arr[++s.top] = a;
+
+    return s;
+}
+bool isempty(stack s){
+    if(s.top == -1)return true;
+    else return false;
+}
+int pop(stack s){
+    if(isempty(s)){
+        printf("stack empty\n");
+        return -1;
+    }
+    return s.arr[s.top--];
+}
+void pr(stack s){
+    for(int i = 0; i <= s.top; i++) printf("%d ", s.arr[i]);
+    printf("top : %d", s.top);
     printf("\n");
-}
-int pop(){
-    return stack[top--];
-}
-void push(int a){
-    stack[++top] = a;
 }
