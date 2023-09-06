@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define SIZE 10
+
+typedef struct Queue{
+    int * arr;
+    int rear, front;
+}que;
+
+que create(int size);
+bool isfull(que q);
+que add(que q, int new);
+bool isempty(que q);
+int del(que q);
+void pr(que q);
+
+int main() {
+    int choose = -1;
+    int item;
+    que q;
+
+    q = create(SIZE);
+    
+    while(choose != 3){
+        printf("1.입력 2.출력 3.종료\n");
+        scanf("%d", &choose);
+        
+        switch(choose){
+            case 1:
+                printf("수 입력 : ");
+                scanf("%d", &item);
+                q = add(q, item);
+                pr(q);
+                break;
+            case 2:
+                item = del(q);
+                if(item != -1) {
+                    q.front++;
+                    printf("출력된 수 : %d\n", item);
+                    pr(q);
+                }
+                break;
+            case 3:
+                break;
+        }
+    }
+    
+    return 0;
+}
+que create(int size){
+    que new;
+
+    new.arr = malloc(sizeof(int)*SIZE);
+    new.rear = -1;
+    new.front = -1;
+
+    return new;
+}
+bool isfull(que q){
+    if(q.rear == SIZE-1) return true;
+    else return false;
+}
+que add(que q, int item){
+    if(isfull(q)) printf("full queue\n");
+    else q.arr[++q.rear] = item;
+    return q;
+}
+bool isempty(que q){
+    if(q.front == q.rear) return true;
+    else return false;
+}
+int del(que q){
+    int item = -1;
+    
+    if(isempty(q)) printf("empty queue\n");
+    else item = q.arr[++q.front];
+
+    return item;
+}
+void pr(que q){
+    int i;
+    if(isempty(q)) {
+        printf("empty queue\n");
+        return;
+    }
+    if(q.front==-1) i = 0;
+    for(; i <= q.rear; i++) {
+        printf("%d ", q.arr[i]);
+    }
+    printf("\n");
+}
