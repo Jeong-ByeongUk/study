@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct NODE* node;
+struct NODE {
+	int data;
+	node link;
+};
+
+node create(int data);
+node push(node top, int data);
+int pop(node top);
+void pr(node top);
+
+int main(void) {
+	node top = NULL;
+	int data;
+	int choose = -1;
+
+	while (choose != 3) {
+		printf("1. 입력 2. 삭제 3. 종료\n");
+		scanf("%d", &choose);
+		switch (choose)
+		{
+		case 1:
+			printf("입력할 수 : ");
+			scanf("%d", &data);
+			top = push(top, data);
+			pr(top);
+			break;
+		case 2:
+			data = pop(top);
+			if (data != -1) {
+				printf("삭제된 수 : %d\n", data);
+				top = top->link;
+			}
+			pr(top);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+node create(int data) {
+	node new = (node)malloc(sizeof(node));
+
+	if (new == NULL) {
+		printf("공간할당실패\n");
+		return new;
+	}
+
+	new->data = data;
+	new->link = NULL;
+
+	return new;
+}
+
+node push(node top, int data) {
+	node new = create(data);
+
+	new->link = top;
+
+	return new;
+}
+
+int pop(node top) {
+	if (top == NULL) {
+		printf("스택이 비어있습니다.");
+		return -1;
+	}
+	return top->data;
+}
+
+void pr(node top) {
+	for (;top != NULL;top = top->link) printf("%d ", top->data);
+	printf("\n");
+}
