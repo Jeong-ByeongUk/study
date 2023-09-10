@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct NODE* node;
+struct NODE {
+	int data;
+	node f_link, b_link;
+};
+
+void pr(node head);
+node insert(node head, int data);
+node create(int data);
+node del(node head, int data);
+
+int main(void) {
+	node head = NULL;
+	int data;
+	int choose = -1;
+	while (choose != 3) {
+		printf("1. 입력 2. 삭제 3. 종료\n");
+		scanf("%d", &choose);
+
+		switch (choose)
+		{
+		case 1:
+			printf("입력할 수 : ");
+			scanf("%d", &data);
+			head = insert(head, data);
+			pr(head);
+			break;
+		case 2:
+			printf("삭제할 수 : ");
+			scanf("%d", &data);
+			head = del(head, data);
+			pr(head);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+node create(int data) {
+	node new = malloc(sizeof(node));
+
+	new->data = data;
+	new->b_link = NULL;
+	new->f_link = NULL;
+}
+node insert(node head, int data) {
+	node new = create(data);
+	node temp = head;
+
+	if (head) {
+		for (;temp->b_link;temp = temp->b_link);
+		temp->b_link = new;
+		new->f_link = temp;
+	}
+	else head = new;
+
+	return head;
+}
+node del(node head, int data) {
+	node temp = head;
+	node temp2 = NULL;
+	for (;temp && temp->data != data;temp = temp->b_link) temp2 = temp;
+
+	
+	if (temp) {
+		printf("삭제된 수 : %d\n", temp->data);
+
+		if (temp->b_link) temp->b_link->f_link = temp2;
+		if (temp->f_link) temp2->b_link = temp->b_link;
+		else head = temp->b_link;
+	} 
+	else {
+		printf("삭제할 수가 존재하지 않습니다\n");
+	}
+
+	return head;
+}
+
+void pr(node head) {
+	for (;head;head = head->b_link) printf("%d <-> ", head->data);
+	printf("NULL\n");
+}
